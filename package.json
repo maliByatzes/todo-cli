@@ -10,5 +10,10 @@
   "type": "module",
   "keywords": [],
   "author": "maliByatzes",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "commander": "^12.0.0",
+    "inquirer": "^9.2.20"
+  }
 }
