@@ -28,7 +28,7 @@ export async function listTodos(options) {
   } catch (err) {
     if (err.code === 'ENOENT') {
       console.log('No todos to display'.green);
-      console.log('Try create creating some with `todo add` command'.green);
+      console.log('Try creating some todos with `add` command'.green);
     } else {
       console.error(err);
     }

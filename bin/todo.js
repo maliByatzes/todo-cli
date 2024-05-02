@@ -3,6 +3,7 @@ import { addTodo } from '../commands/add.js';
 import { listTodos } from '../commands/list.js';
 import { updateTodo } from '../commands/update.js';
 import { removeTodo } from '../commands/remove.js';
+import { completeTodo } from '../commands/complete.js';
 
 const program = new Command();
 // set the version, description of the cli
@@ -33,5 +34,11 @@ program
   .description('Remove one todo')
   .option('--id <number>', 'id number of a single todo')
   .action((options) => { removeTodo(options) });
+
+program
+  .command('complete')
+  .description('Mark a todo as completed')
+  .option('--id <number>', 'id number of a single todo')
+  .action((options) => { completeTodo(options) });
 
 program.parse();

@@ -1,10 +1,8 @@
-import inquirer from "inquirer";
-import jsonfile from 'jsonfile';
-import { required } from "../utils/validation.js";
+import jsonfile from "jsonfile";
 
 const fileName = './todo.json';
 
-export async function updateTodo(options) {
+export async function completeTodo(options) {
   const id = options.id || 0;
 
   try {
@@ -12,24 +10,23 @@ export async function updateTodo(options) {
     if (id !== 0) {
       const todo = contents.find(todo => todo.id.toString() === id);
       if (todo) {
-        const { newtodo } = await inquirer.prompt([
-          { type: 'input', name: 'newtodo', message: 'Enter todo'.green, validate: required }
-        ]);
-        todo.todo = newtodo;
+        todo.is_completed = true;
       } else {
         console.error(`Todo with id ${id} does not exist`.red);
         return;
       }
       await jsonfile.writeFile(fileName, contents);
-      console.log(`Todo with id ${id} is updated successfully`.green);
+      console.log(`Todo with id ${id} is marked as completed`.green);
     } else {
       console.error('Invalid id'.red);
       return;
     }
   } catch (err) {
     if (err.code === 'ENOENT') {
-      console.log('No todos to update'.green);
+      console.log('No todos to mark as complete'.green);
       console.log('Try creating some todos with `add` command'.green);
-    } else { console.error(err); }
+    } else {
+      console.error(err);
+    }
   }
 }
