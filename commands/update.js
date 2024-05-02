@@ -18,6 +18,7 @@ export async function updateTodo(options) {
         todo.todo = newtodo;
       } else {
         console.error(`Todo with id ${id} does not exist`.red);
+        return;
       }
       await jsonfile.writeFile(fileName, contents);
       console.log(`Todo with id ${id} is updated successfully`.green);

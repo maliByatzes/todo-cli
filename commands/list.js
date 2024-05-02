@@ -13,10 +13,15 @@ export async function listTodos(options) {
         console.log(`ID: ${todo.id}, todo: ${todo.todo}`.blue.bold);
       } else {
         console.error(`Todo with id ${id} does not exist`.red);
+        return;
       }
     } else {
+      if (contents.length === 0) {
+        console.log('No todos to display'.green);
+        return;
+      }
       for (const item of contents) {
-        console.log(`ID: ${item.id}, todo: ${item.todo}`.blue.bold);
+        console.log(`${item.id} => ${item.todo}`.blue.bold);
       }
     }
   } catch (err) {

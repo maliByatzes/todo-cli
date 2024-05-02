@@ -1,14 +1,14 @@
 import { Command } from 'commander';
-import pkg from '../package.json' assert { type: 'json' };
 import { addTodo } from '../commands/add.js';
 import { listTodos } from '../commands/list.js';
 import { updateTodo } from '../commands/update.js';
+import { removeTodo } from '../commands/remove.js';
 
 const program = new Command();
 // set the version, description of the cli
 // add sub-commnands to the base app
 program
-  .version(pkg.version)
+  .version('1.0.0')
   .description('Manage todos from this command line application');
 
 program
@@ -27,5 +27,11 @@ program
   .description('Update one todo')
   .option('--id <number>', 'id number of a single todo')
   .action((options) => { updateTodo(options) });
+
+program
+  .command('remove')
+  .description('Remove one todo')
+  .option('--id <number>', 'id number of a single todo')
+  .action((options) => { removeTodo(options) });
 
 program.parse();
