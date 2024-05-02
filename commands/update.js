@@ -24,6 +24,9 @@ export async function updateTodo(options) {
       console.log(`Todo with id ${id} is updated successfully`.green);
     }
   } catch (err) {
-    console.error(err);
+    if (err.code === 'ENOENT') {
+      console.log('No todos to update'.green);
+      console.log('Try create creating some with `todo add` command'.green);
+    } else { console.error(err); }
   }
 }

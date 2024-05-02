@@ -19,6 +19,9 @@ export async function removeTodo(options) {
       }
     }
   } catch (err) {
-    console.error(err);
+    if (err.code === 'ENOENT') {
+      console.log('No todos to remove'.green);
+      console.log('Try create creating some with `todo add` command'.green);
+    } else { console.error(err); }
   }
 }

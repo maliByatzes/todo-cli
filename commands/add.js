@@ -16,20 +16,21 @@ async function writeToFile(todoName) {
     }
 
     // Create new todo object with incremented ID
-    const newTodo = { id: lastTodoID + 1, todo: todoName };
+    const newTodo = { id: lastTodoID + 1, todo: todoName, is_completed: false };
 
     // Update contents and write to file
     contents.push(newTodo);
     await jsonfile.writeFile(fileName, contents);
     console.log('Todo added successfully'.green);
   } catch (err) {
-    // Handle potential errors during read/write
-    console.error(err);
-
     // Handle ENOENT error (file doesn't exist) by creating it with the new todo
     if (err.code === 'ENOENT') {
+      const newTodo = { id: 1, todo: todoName, is_completed: false };
       await jsonfile.writeFile(fileName, [newTodo]);
       console.log('Todo added successfully (new file created)'.green);
+    } else {
+      // Handle potential errors during read/write
+      console.error(err);
     }
   }
 }
