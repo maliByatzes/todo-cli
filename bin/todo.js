@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import pkg from '../package.json' assert { type: 'json' };
 import { addTodo } from '../commands/add.js';
 import { listTodos } from '../commands/list.js';
+import { updateTodo } from '../commands/update.js';
 
 const program = new Command();
 // set the version, description of the cli
@@ -18,7 +19,13 @@ program
 program
   .command('list')
   .description('List todos')
-  .option('--id <int>', 'id number of a single todo')
+  .option('--id <number>', 'id number of a single todo')
   .action((options) => { listTodos(options) });
+
+program
+  .command('update')
+  .description('Update one todo')
+  .option('--id <number>', 'id number of a single todo')
+  .action((options) => { updateTodo(options) });
 
 program.parse();

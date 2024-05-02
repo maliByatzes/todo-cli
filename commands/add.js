@@ -5,54 +5,51 @@ import { required } from '../utils/validation.js';
 
 const fileName = './todo.json';
 
-function writeToFile(todoname) {
-  // read the file first to see of it exists
-  jsonfile.readFile(fileName, function (err, contents) {
-    if (err && err.code === 'ENOENT') {
-      const obj = [ { id: 1, todo: todoname } ];
-      jsonfile.writeFile(fileName, obj, function (err) {
-        console.error(err);
-      });
-      console.log('Todo added successfully'.green);
-      return;
-    } else if (err) {
-      console.error(err);
-      return;
-    };
-
+async function writeToFile(todoName) {
+  try {
+    // Read the file to check existence and get last ID
+    let contents = await jsonfile.readFile(fileName);
     let lastTodoID = 0;
-    for (const item of contents) {
-      if (contents.indexOf(item) === contents.length - 1) {
-        lastTodoID = item.id;
-      }
+
+    if (contents.length) {
+      lastTodoID = contents[contents.length - 1].id;
     }
 
-    const obj = { id: lastTodoID+1, todo: todoname };
-    contents.push(obj);
-    jsonfile.writeFile(fileName, contents, function(err) {
-      console.error(err);
-    });
+    // Create new todo object with incremented ID
+    const newTodo = { id: lastTodoID + 1, todo: todoName };
+
+    // Update contents and write to file
+    contents.push(newTodo);
+    await jsonfile.writeFile(fileName, contents);
     console.log('Todo added successfully'.green);
-  });
-  return;
+  } catch (err) {
+    // Handle potential errors during read/write
+    console.error(err);
+
+    // Handle ENOENT error (file doesn't exist) by creating it with the new todo
+    if (err.code === 'ENOENT') {
+      await jsonfile.writeFile(fileName, [newTodo]);
+      console.log('Todo added successfully (new file created)'.green);
+    }
+  }
 }
 
-export function addTodo() {
-  // go to interactive mode for user input
-  inquirer
-    .prompt([
+export async function addTodo() {
+  try {
+    // Get user input for todo name
+    const { todoName } = await inquirer.prompt([
       {
         type: 'input',
-        name: 'todoname',
+        name: 'todoName',
         message: 'Enter a todo'.green,
         validate: required,
-      }
-    ])
-    .then((answers) => {
-      writeToFile(answers.todoname);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+      },
+    ]);
+
+    // Write the todo to the file
+    await writeToFile(todoName);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
