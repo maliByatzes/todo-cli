@@ -1,0 +1,14 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "A simple todo cli appplication",
+  "main": "index.js",
+  "bin": "./bin/todo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "maliByatzes",
+  "license": "ISC"
+}
